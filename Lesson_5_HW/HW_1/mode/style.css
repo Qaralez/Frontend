@@ -1,0 +1,23 @@
+body{
+    margin: 0%;
+    padding: 20px;
+    line-height: 1.5;
+}
+
+.block {
+    margin-bottom: 25px;
+    max-width: 600px;
+}
+
+.arial{
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.times{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.courier{
+    font-family: 'Courier New', Courier, monospace;
+}
