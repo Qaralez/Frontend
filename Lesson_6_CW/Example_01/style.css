@@ -1,0 +1,134 @@
+header {
+  background-color: lightblue;
+  height: 70px;
+}
+
+footer {
+  background-color: lightgrey;
+  height: 100px;
+}
+
+main {
+  min-height: 100vh;
+  /* vh - viewport heigh  100vh - это высота вьюпорта */
+  /* vw - viewport width */
+}
+
+.card {
+  height: 450px;
+  width: 300px;
+  margin: 24px;
+  position: static;
+}
+
+.red {
+  background-color: red;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.green {
+  background-color: green;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+/* normal flow - обычный поток данных в документе */
+/* position: static  - это свойство по умолчанию
+
+    postion: relative; 
+    релатив - мы можем управлять положением элемента при помощи
+    top, right, bottom, left
+    он будет расположен относительно своего нормального положения
+    (как если бы он был статическим)
+    А другие элементы ведут себя, как если бы он продолжал оставаться 
+    на своем месте 
+*/
+
+.relative {
+  position: relative;
+  top: 40px;
+  left: 50px;
+}
+
+.offset {
+  position: relative;
+  top: -30px;
+  left: 30px;
+}
+
+.parent {
+  position: relative;
+}
+
+.child {
+  background-color: yellow;
+  width: 50px;
+  height: 50px;
+
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* 
+    position: absolute;
+    элемент размещается относительно документа
+    или если есть родитель со значением не равным static
+    (позиционированный элемент)
+    то он будет размещаться относительно него
+
+    абсолютно позиционированный элемент исчезает из нормального потока
+*/
+
+.up {
+  background-color: lightgreen;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  margin: auto;
+
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+/* 
+    position: fixed;
+    элемент размещается относительно вьюпорта = экрана
+    top, right, bottom, left
+   
+    элемент исчезает из нормального потока (другие не замечают)
+*/
+
+.sticky {
+  position: sticky;
+  top: 46px;
+  /* z индекс - отвечат за слои наложения элементов */
+  z-index: 3;
+}
+
+.nav-bar {
+  position: sticky;
+  top: 0;
+
+  background-color: lightpink;
+  height: 40px;
+  z-index: 9;
+}
+
+/* 
+  postition sticky 
+ сначала ведет себя как статический - а потом как fixed 
+ когда край экран достиг элемента на указанное расстояние
+ top: 30px;
+ - элемент "залип"
+*/
