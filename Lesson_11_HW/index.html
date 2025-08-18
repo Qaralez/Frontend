@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <h1>Форма обратной связи</h1>
+    <form action="#" method="get">
+        <fieldset>
+            <legend>Как с вами связаться </legend>
+            <label for="name">Ваше имя: </label> <br>
+            <input type="text" name="username" id="name" placeholder="Ваше имя "> <br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" name="email" id="email" placeholder="your_email@icloud.com"><br>
+            <label for="number"> Номер телефона:</label><br>
+            <input type="number" name="number" id="number" placeholder="+4915201234566798">
+
+
+            <fieldset>
+                <legend>Данные контракта</legend>
+                <label for="Date" >Дата:</label> <br>
+                <input type="date" name="date" id="Date"> <br>
+                <label for="Number">Номер</label><br>
+                <input type="number" name="number" id="number" placeholder="K/209/13"> <br>
+            </fieldset>
+        </fieldset> 
+        <legend>Оцените наш сервис :</legend>   
+
+            <ul>
+                <li><input type="radio" name="Note">Хорошо</li>
+                <li><input type="radio" name="Note"> Удовлетворительно</li>
+                <li><input type="radio" name="Note"> Плохо</li>
+            </ul>
+            <br>
+            <legend>Как часто используюте наш сервис :</legend>   
+
+            <ul>
+                <li><input type="radio" name="Note">Первый раз</li>
+                <li><input type="radio" name="Note"> Иногда</li>
+                <li><input type="radio" name="Note"> Часто</li>
+            </ul>
+        <br>
+
+        <label for="Message">Сообщение</label><br>
+        <input type="message" name="message" placeholder="напишите ваше сообщение ....."><br>
+        
+        <button type="submit">Отправить </button>
+
+    </form>
+    
+</body>
+</html>
