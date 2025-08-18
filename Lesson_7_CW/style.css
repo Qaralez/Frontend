@@ -1,0 +1,31 @@
+*{
+    box-sizing: border-box;
+}
+h2{
+    background-color: bisque;
+    margin: 20px 20px 20px 20px;
+    display: inline-block;
+}
+#h1{
+    margin-top: 200px;
+    display: none;
+}
+
+.d1{
+    
+    display: block;
+    width: 200px;
+    height: 200px;
+    background-color: aquamarine;
+}
+a{
+    text-decoration: none;
+    border: 1px red solid;
+}
+
+a:hover{
+   background-color: rgb(222, 183, 183);
+}
+a:visited{
+    display: none;
+}

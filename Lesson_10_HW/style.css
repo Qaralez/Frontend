@@ -1,0 +1,36 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+img{
+    width: 100%;
+    border: 2px solid gray;
+    border-radius: 50%;
+}
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+}
+.card{
+    
+    width: 20%;
+    background-color: rgba(12, 133, 226, 0.166);
+    color: gray;
+    padding: 1.2em;
+    text-align: justify;
+    border-radius: 5%;
+    border: 1px solid gray;
+}
+h2{
+    color: rgb(245, 238, 238);
+    font-size: 3em;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-shadow: 10px 0 3px gray;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
