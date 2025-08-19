@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="#" method="get"></form>
+        <select name="operation" required>
+             <option value="">Выберите тип операции</option>
+             <optgroup label="Операции со счетом">
+             <option value="1">Пополнит счет</option>
+                <option value="2">Снять наличные</option>
+             <option value="3">Посмотреть баланс</option>
+             </optgroup>
+
+             
+             <optgroup label="Операции по кредиту">
+                <option value="4">Планово погасить</option>
+                <option value="5">Погасить досрочно</option>
+                <option value="6">Выписка</option>
+             </optgroup>
+        </select>
+
+        <br>
+        <br>
+        <label for="city">Введите город</label> <br>
+        <input list="cities" name="city" id="city">
+        <datalist>
+            <option value="Berlin"></option>
+            <option value="Hamburg">   </option>
+            <option value="Postsdam"></option>
+        </datalist>
+        <button type="submit">Send</button>
+</body>
+</html>
