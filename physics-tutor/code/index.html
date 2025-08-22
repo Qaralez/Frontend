@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Problem Solver</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .select-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        select, input[type="number"] {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #task-info {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        #task-info p {
+            margin: 0.5rem 0;
+            color: #555;
+        }
+
+        #task-block {
+            background-color: #e8f4fc;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        #task-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #2c3e50;
+            margin: 1rem 0;
+        }
+
+        .input-block {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        #user-answer {
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        #result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .correct {
+            color: #27ae60;
+            background-color: #e8f5e8;
+        }
+
+        .incorrect {
+            color: #e74c3c;
+            background-color: #fdedec;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .controls {
+                gap: 0.8rem;
+            }
+            
+            button {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Решатель задач по физике</h1>
+        
+        <div class="controls">
+            <div class="select-group">
+                <label for="difficulty-select" id="difficulty-label">Выберите класс:</label>
+                <select id="difficulty-select">
+                    <option value="7">7 класс</option>
+                    <option value="8">8 класс</option>
+                    <option value="9">9 класс</option>
+                    <option value="10">10 класс</option>
+                    <option value="11">11 класс</option>
+                </select>
+            </div>
+
+            <div class="select-group">
+                <label for="language-select" id="language-label">Выберите язык:</label>
+                <select id="language-select">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                    <option value="uk">Українська</option>
+                    <option value="de">Deutsch</option>
+                    <option value="tr">Türkçe</option>
+                    <option value="kk">Қазақша</option>
+                </select>
+            </div>
+
+            <button id="generate-task-btn">Сгенерировать задачу</button>
+        </div>
+
+        <div id="task-info">
+            <p id="topic-display"></p>
+            <p id="difficulty-display"></p>
+        </div>
+        
+        <div id="task-block">
+            <h2 id="task-header">Задача:</h2>
+            <p id="task-text">Нажмите "Сгенерировать задачу" чтобы начать</p>
+        </div>
+
+        <div class="input-block">
+            <label for="user-answer" id="answer-label">Ваш ответ:</label>
+            <input type="number" id="user-answer" step="any" placeholder="Введите число">
+        </div>
+
+        <div class="button-group">
+            <button id="check-answer-btn">Проверить ответ</button>
+            <button id="new-task-btn">Новая задача</button>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        
+        let currentLanguage = 'ru';
+        let currentDifficulty = 7;
+        let currentTask = null;
+        let currentParams = null;
+        let correctAnswer = null;
+        let interfaceTranslations = {};
+
+       
+        const physicsTasks = [
+            {
+                id: 1,
+                difficulty: 7,
+                topics: ["kinematics", "speed"],
+                problem: {
+                    ru: "Автомобиль проехал {distance} км за {time} часа. Найдите среднюю скорость автомобиля. Ответ округлите до целых.",
+                    en: "A car traveled {distance} km in {time} hours. Find the average speed of the car. Round your answer to the nearest whole number.",
+                    uk: "Автомобіль проїхав {distance} км за {time} години. Знайдіть середню швидкість автомобіля. Відповідь округліть до цілих.",
+                    de: "Ein Auto fuhr {distance} km in {time} Stunden. Finden Sie die Durchschnittsgeschwindigkeit des Autos. Runden Sie Ihre Antwort auf die nächste ganze Zahl.",
+                    tr: "Bir araba {distance} km'yi {time} saatte kat etti. Arabanın ortalama hızını bulun. Cevabınızı tam sayıya yuvarlayın.",
+                    kk: "Көлік {distance} км жолды {time} сағатта жүрді. Көліктің орташа жылдамдығын табыңыз. Жауапты бүтін санға дейін дөңгелектеңіз."
+                },
+                generateParams: () => {
+                    const distance = Math.floor(Math.random() * 100) + 50;
+                    const time = Math.floor(Math.random() * 4) + 2;
+                    return { distance, time };
+                },
+                calculateAnswer: (params) => params.distance / params.time,
+                formatAnswer: (answer) => Math.round(answer),
+                answerUnit: {
+                    ru: "км/ч",
+                    en: "km/h",
+                    uk: "км/год",
+                    de: "km/h",
+                    tr: "km/sa",
+                    kk: "км/сағ"
+                }
+            },
+            {
+                id: 2,
+                difficulty: 7,
+                topics: ["density", "mass", "volume"],
+                problem: {
+                    ru: "Тело массой {mass} кг имеет объем {volume} м³. Найдите его плотность. Ответ округлите до десятых.",
+                    en: "A body with a mass of {mass} kg has a volume of {volume} m³. Find its density. Round your answer to the nearest tenth.",
+                    uk: "Тіло масою {mass} кг має об'єм {volume} м³. Знайдіть його густину. Відповідь округліть до десятих.",
+                    de: "Ein Körper mit einer Masse von {mass} kg hat ein Volumen von {volume} m³. Finden Sie seine Dichte. Runden Sie Ihre Antwort auf das nächste Zehntel.",
+                    tr: "Kütlesi {mass} kg olan bir cismin hacmi {volume} m³'tür. Yoğunluğunu bulun. Cevabınızı en yakın ondalığa yuvarlayın.",
+                    kk: "Массасы {mass} кг дененің көлемі {volume} м³. Оның тығыздығын табыңыз. Жауапты ондық бөлшекке дейін дөңгелектеңіз."
+                },
+                generateParams: () => {
+                    const mass = Math.floor(Math.random() * 100) + 10;
+                    const volume = (Math.floor(Math.random() * 50) + 5) / 10;
+                    return { mass, volume };
+                },
+                calculateAnswer: (params) => params.mass / params.volume,
+                formatAnswer: (answer) => Math.round(answer * 10) / 10,
+                answerUnit: {
+                    ru: "кг/м³",
+                    en: "kg/m³",
+                    uk: "кг/м³",
+                    de: "kg/m³",
+                    tr: "kg/m³",
+                    kk: "кг/м³"
+                }
+            },
+            {
+                id: 3,
+                difficulty: 8,
+                topics: ["force", "pressure"],
+                problem: {
+                    ru: "Сила {force} Н действует на площадь {area} м². Какое давление оказывает эта сила? Ответ округлите до целых.",
+                    en: "A force of {force} N acts on an area of {area} m². What pressure does this force exert? Round your answer to the nearest whole number.",
+                    uk: "Сила {force} Н діє на площу {area} м². Який тиск чинить ця сила? Відповідь округліть до цілих.",
+                    de: "Eine Kraft von {force} N wirkt auf eine Fläche von {area} m². Welchen Druck übt diese Kraft aus? Runden Sie Ihre Antwort auf die nächste ganze Zahl.",
+                    tr: "{force} N'luk bir kuvvet {area} m²'lik bir alana etki ediyor. Bu kuvvet ne kadar basınç uygular? Cevabınızı tam sayıya yuvarlayın.",
+                    kk: "{force} Н күші {area} м² ауданына әсер етеді. Бұл күш қандай қысым түсіреді? Жауапты бүтін санға дейін дөңгелектеңіз."
+                },
+                generateParams: () => {
+                    const force = Math.floor(Math.random() * 500) + 100;
+                    const area = (Math.floor(Math.random() * 15) + 1) / 10;
+                    return { force, area };
+                },
+                calculateAnswer: (params) => params.force / params.area,
+                formatAnswer: (answer) => Math.round(answer),
+                answerUnit: {
+                    ru: "Па",
+                    en: "Pa",
+                    uk: "Па",
+                    de: "Pa",
+                    tr: "Pa",
+                    kk: "Па"
+                }
+            }
+        ];
+
+        
+        const translations = {
+            'ru': {
+                'title': 'Решатель задач по физике',
+                'selectDifficulty': 'Выберите класс:',
+                'selectLanguage': 'Выберите язык:',
+                'generateTask': 'Сгенерировать задачу',
+                'checkAnswer': 'Проверить ответ',
+                'yourAnswer': 'Ваш ответ:',
+                'correct': 'Верно!',
+                'incorrect': 'Неверно. Правильный ответ: ',
+                'newTask': 'Новая задача',
+                'taskTopic': 'Тема: ',
+                'difficultyLevel': 'Класс: ',
+                'enterNumber': 'Введите число',
+                'pleaseEnterNumber': 'Пожалуйста, введите число!',
+                'noTasksAvailable': 'Нет задач для этого уровня сложности'
+            },
+            'en': {
+                'title': 'Physics Problem Solver',
+                'selectDifficulty': 'Select grade:',
+                'selectLanguage': 'Select language:',
+                'generateTask': 'Generate Task',
+                'checkAnswer': 'Check Answer',
+                'yourAnswer': 'Your answer:',
+                'correct': 'Correct!',
+                'incorrect': 'Incorrect. The correct answer is: ',
+                'newTask': 'New Task',
+                'taskTopic': 'Topic: ',
+                'difficultyLevel': 'Grade: ',
+                'enterNumber': 'Enter a number',
+                'pleaseEnterNumber': 'Please enter a number!',
+                'noTasksAvailable': 'No tasks available for this difficulty level'
+            },
+            'uk': {
+                'title': 'Вирішувач задач з фізики',
+                'selectDifficulty': 'Оберіть клас:',
+                'selectLanguage': 'Оберіть мову:',
+                'generateTask': 'Згенерувати задачу',
+                'checkAnswer': 'Перевірити відповідь',
+                'yourAnswer': 'Ваша відповідь:',
+                'correct': 'Вірно!',
+                'incorrect': 'Невірно. Правильна відповідь: ',
+                'newTask': 'Нова задача',
+                'taskTopic': 'Тема: ',
+                'difficultyLevel': 'Клас: ',
+                'enterNumber': 'Введіть число',
+                'pleaseEnterNumber': 'Будь ласка, введіть число!',
+                'noTasksAvailable': 'Немає завдань для цього рівня складності'
+            },
+            'de': {
+                'title': 'Physik-Problemlöser',
+                'selectDifficulty': 'Klasse auswählen:',
+                'selectLanguage': 'Sprache auswählen:',
+                'generateTask': 'Aufgabe generieren',
+                'checkAnswer': 'Antwort prüfen',
+                'yourAnswer': 'Ihre Antwort:',
+                'correct': 'Richtig!',
+                'incorrect': 'Falsch. Richtige Antwort: ',
+                'newTask': 'Neue Aufgabe',
+                'taskTopic': 'Thema: ',
+                'difficultyLevel': 'Klasse: ',
+                'enterNumber': 'Geben Sie eine Zahl ein',
+                'pleaseEnterNumber': 'Bitte geben Sie eine Zahl ein!',
+                'noTasksAvailable': 'Keine Aufgaben für dieses Schwierigkeitslevel verfügbar'
+            },
+            'tr': {
+                'title': 'Fizik Problem Çözücü',
+                'selectDifficulty': 'Sınıf seçin:',
+                'selectLanguage': 'Dil seçin:',
+                'generateTask': 'Görev Oluştur',
+                'checkAnswer': 'Cevabı Kontrol Et',
+                'yourAnswer': 'Cevabınız:',
+                'correct': 'Doğru!',
+                'incorrect': 'Yanlış. Doğru cevap: ',
+                'newTask': 'Yeni Görev',
+                'taskTopic': 'Konu: ',
+                'difficultyLevel': 'Sınıf: ',
+                'enterNumber': 'Bir sayı girin',
+                'pleaseEnterNumber': 'Lütfen bir sayı girin!',
+                'noTasksAvailable': 'Bu zorluk seviyesi için görev yok'
+            },
+            'kk': {
+                'title': 'Физика Есептер Шешуші',
+                'selectDifficulty': 'Сыныпты таңдаңыз:',
+                'selectLanguage': 'Тілді таңдаңыз:',
+                'generateTask': 'Тапсырма жасау',
+                'checkAnswer': 'Жауапты тексеру',
+                'yourAnswer': 'Сіздің жауабыңыз:',
+                'correct': 'Дұрыс!',
+                'incorrect': 'Қате. Дұрыс жауап: ',
+                'newTask': 'Жаңа тапсырма',
+                'taskTopic': 'Тақырып: ',
+                'difficultyLevel': 'Сынып: ',
+                'enterNumber': 'Сан енгізіңіз',
+                'pleaseEnterNumber': 'Саныңызды енгізіңіз!',
+                'noTasksAvailable': 'Осы қиындық деңгейіне арналған тапсырмалар жоқ'
+            }
+        };
+
+        
+        function loadTranslations(lang) {
+            interfaceTranslations = translations[lang] || translations['en'];
+            updateUI();
+        }
+
+        
+        function updateUI() {
+            document.getElementById('title').textContent = interfaceTranslations.title;
+            document.getElementById('difficulty-label').textContent = interfaceTranslations.selectDifficulty;
+            document.getElementById('language-label').textContent = interfaceTranslations.selectLanguage;
+            document.getElementById('generate-task-btn').textContent = interfaceTranslations.generateTask;
+            document.getElementById('check-answer-btn').textContent = interfaceTranslations.checkAnswer;
+            document.getElementById('answer-label').textContent = interfaceTranslations.yourAnswer;
+            document.getElementById('new-task-btn').textContent = interfaceTranslations.newTask;
+            document.getElementById('task-header').textContent = interfaceTranslations.generateTask;
+            document.getElementById('user-answer').placeholder = interfaceTranslations.enterNumber;
+        }
+
+        
+        function generateNewTask() {
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = '';
+            resultElement.className = '';
+            document.getElementById('user-answer').value = '';
+
+            const filteredTasks = physicsTasks.filter(task => task.difficulty == currentDifficulty);
+
+            if (filteredTasks.length === 0) {
+                resultElement.textContent = interfaceTranslations.noTasksAvailable;
+                resultElement.className = 'incorrect';
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * filteredTasks.length);
+            currentTask = filteredTasks[randomIndex];
+            currentParams = currentTask.generateParams();
+            
+            const problemTemplate = currentTask.problem[currentLanguage];
+            let problemText = problemTemplate;
+            
+            for (const [key, value] of Object.entries(currentParams)) {
+                problemText = problemText.replace(`{${key}}`, value);
+            }
+
+            correctAnswer = currentTask.calculateAnswer(currentParams);
+            correctAnswer = currentTask.formatAnswer(correctAnswer);
+
+            document.getElementById('task-text').textContent = problemText;
+            document.getElementById('topic-display').textContent = `${interfaceTranslations.taskTopic}${currentTask.topics.join(', ')}`;
+            document.getElementById('difficulty-display').textContent = `${interfaceTranslations.difficultyLevel}${currentTask.difficulty}`;
+        }
+
+        
+        function checkAnswer() {
+            const userInput = parseFloat(document.getElementById('user-answer').value);
+            const resultElement = document.getElementById('result');
+
+            if (isNaN(userInput)) {
+                resultElement.textContent = interfaceTranslations.pleaseEnterNumber;
+                resultElement.className = 'incorrect';
+                return;
+            }
+
+            if (userInput === correctAnswer) {
+                resultElement.textContent = `${interfaceTranslations.correct} ${correctAnswer} ${currentTask.answerUnit[currentLanguage]}`;
+                resultElement.className = 'correct';
+            } else {
+                resultElement.textContent = `${interfaceTranslations.incorrect} ${correctAnswer} ${currentTask.answerUnit[currentLanguage]}`;
+                resultElement.className = 'incorrect';
+            }
+        }
+
+        
+        window.onload = function() {
+            loadTranslations(currentLanguage);
+
+            document.getElementById('difficulty-select').addEventListener('change', function() {
+                currentDifficulty = parseInt(this.value);
+            });
+
+            document.getElementById('language-select').addEventListener('change', function() {
+                currentLanguage = this.value;
+                loadTranslations(currentLanguage);
+                if (currentTask) {
+                    generateNewTask();
+                }
+            });
+
+            document.getElementById('generate-task-btn').addEventListener('click', generateNewTask);
+            document.getElementById('check-answer-btn').addEventListener('click', checkAnswer);
+            document.getElementById('new-task-btn').addEventListener('click', generateNewTask);
+
+            generateNewTask();
+        };
+    </script>
+</body>
+</html>

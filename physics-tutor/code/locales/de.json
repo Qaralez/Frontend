@@ -1,0 +1,14 @@
+{
+    "enterNumber": "Geben Sie eine Zahl ein",
+    "title": "Physik-Problemlöser",
+    "selectDifficulty": "Klasse auswählen:",
+    "selectLanguage": "Sprache auswählen:",
+    "generateTask": "Aufgabe generieren",
+    "checkAnswer": "Antwort prüfen",
+    "yourAnswer": "Ihre Antwort:",
+    "correct": "Richtig!",
+    "incorrect": "Falsch. Richtige Antwort: ",
+    "newTask": "Neue Aufgabe",
+    "taskTopic": "Thema: ",
+    "difficultyLevel": "Klasse: "
+}

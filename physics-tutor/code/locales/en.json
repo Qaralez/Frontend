@@ -1,0 +1,15 @@
+{
+    "enterNumber": "Enter a number",
+    "title": "Physics Problem Solver",
+    "selectDifficulty": "Select grade:",
+    "selectLanguage": "Select language:",
+    "generateTask": "Generate Task",
+    "checkAnswer": "Check Answer",
+    "yourAnswer": "Your answer:",
+    "correct": "Correct!",
+    "incorrect": "Incorrect. The correct answer is: ",
+    "newTask": "New Task",
+    "taskTopic": "Topic: ",
+    "difficultyLevel": "Grade: "
+    
+}

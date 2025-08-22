@@ -1,0 +1,14 @@
+{
+    "enterNumber": "Сан енгізіңіз",
+    "title": "Физика Есептер Шешуші",
+    "selectDifficulty": "Сыныпты таңдаңыз:",
+    "selectLanguage": "Тілді таңдаңыз:",
+    "generateTask": "Тапсырма жасау",
+    "checkAnswer": "Жауапты тексеру",
+    "yourAnswer": "Сіздің жауабыңыз:",
+    "correct": "Дұрыс!",
+    "incorrect": "Қате. Дұрыс жауап: ",
+    "newTask": "Жаңа тапсырма",
+    "taskTopic": "Тақырып: ",
+    "difficultyLevel": "Сынып: "
+}

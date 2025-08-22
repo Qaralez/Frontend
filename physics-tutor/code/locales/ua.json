@@ -1,0 +1,14 @@
+{
+    "enterNumber": "Введіть число",
+    "title": "Вирішувач задач з фізики",
+    "selectDifficulty": "Оберіть клас:",
+    "selectLanguage": "Оберіть мову:",
+    "generateTask": "Згенерувати задачу",
+    "checkAnswer": "Перевірити відповідь",
+    "yourAnswer": "Ваша відповідь:",
+    "correct": "Вірно!",
+    "incorrect": "Невірно. Правильна відповідь: ",
+    "newTask": "Нова задача",
+    "taskTopic": "Тема: ",
+    "difficultyLevel": "Клас: "
+}

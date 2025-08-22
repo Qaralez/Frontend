@@ -1,0 +1,14 @@
+{
+    "enterNumber": "Bir sayı girin",
+    "title": "Fizik Problem Çözücü",
+    "selectDifficulty": "Sınıf seçin:",
+    "selectLanguage": "Dil seçin:",
+    "generateTask": "Görev Oluştur",
+    "checkAnswer": "Cevabı Kontrol Et",
+    "yourAnswer": "Cevabınız:",
+    "correct": "Doğru!",
+    "incorrect": "Yanlış. Doğru cevap: ",
+    "newTask": "Yeni Görev",
+    "taskTopic": "Konu: ",
+    "difficultyLevel": "Sınıf: "
+}
