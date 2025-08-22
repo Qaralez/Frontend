@@ -313,6 +313,223 @@
                     tr: "Pa",
                     kk: "Па"
                 }
+            },
+            {
+                id: 4,
+                difficulty: 8,
+                topics: ["work", "energy"],
+                problem: {
+                    ru: "Груз массой {mass} кг подняли на высоту {height} м. Какую работу совершили? Ускорение свободного падения принять равным 10 м/с². Ответ в Дж.",
+                    en: "A load of {mass} kg was lifted to a height of {height} m. What work was done? Take the acceleration due to gravity as 10 m/s². Answer in J.",
+                    uk: "Вантаж масою {mass} кг підняли на висоту {height} м. Яку роботу виконали? Прискорення вільного падіння прийняти рівним 10 м/с². Відповідь у Дж.",
+                    de: "Eine Last von {mass} kg wurde auf eine Höhe von {height} m angehoben. Welche Arbeit wurde verrichtet? Nehmen Sie die Erdbeschleunigung als 10 m/s² an. Antwort in J.",
+                    tr: "{mass} kg'lık bir yük {height} m yüksekliğe kaldırıldı. Ne kadar iş yapıldı? Yerçekimi ivmesini 10 m/s² alın. Cevap J cinsinden.",
+                    kk: "{mass} кг жүк {height} м биіктікке көтерілді. Қанша жұмыс орындалды? Еркін түсу үдеуін 10 м/с² деп алыңыз. Жауап Дж."
+                },
+                generateParams: () => {
+                    const mass = Math.floor(Math.random() * 50) + 10;
+                    const height = Math.floor(Math.random() * 20) + 5;
+                    return { mass, height };
+                },
+                calculateAnswer: (params) => params.mass * 10 * params.height,
+                formatAnswer: (answer) => Math.round(answer),
+                answerUnit: {
+                    ru: "Дж",
+                    en: "J",
+                    uk: "Дж",
+                    de: "J",
+                    tr: "J",
+                    kk: "Дж"
+                }
+            },
+
+            // 9 КЛАСС (электричество, кинематика)
+            {
+                id: 5,
+                difficulty: 9,
+                topics: ["electrics", "power"],
+                problem: {
+                    ru: "Электрический прибор с сопротивлением {resistance} Ом работает при напряжении {voltage} В. Найдите мощность тока в приборе. Ответ округлите до целых.",
+                    en: "An electrical device with a resistance of {resistance} Ω operates at a voltage of {voltage} V. Find the power of the current in the device. Round your answer to the nearest whole number.",
+                    uk: "Електричний прилад з опором {resistance} Ом працює при напрузі {voltage} В. Знайдіть потужність струму в приладі. Відповідь округліть до цілих.",
+                    de: "Ein elektrisches Gerät mit einem Widerstand von {resistance} Ω arbeitet bei einer Spannung von {voltage} V. Finden Sie die Leistung des Stroms im Gerät. Runden Sie Ihre Antwort auf die nächste ganze Zahl.",
+                    tr: "Direnci {resistance} Ω olan bir elektrikli cihaz {voltage} V voltajda çalışır. Cihazdaki akımın gücünü bulun. Cevabınızı tam sayıya yuvarlayın.",
+                    kk: "Кедергісі {resistance} Ом болатын электр құрылғысы {voltage} В кернеуде жұмыс істейді. Құрылғыдағы ток күшін табыңыз. Жауапты бүтін санға дейін дөңгелектеңіз."
+                },
+                generateParams: () => {
+                    const resistance = Math.floor(Math.random() * 200) + 10;
+                    const voltage = Math.floor(Math.random() * 220) + 10;
+                    return { resistance, voltage };
+                },
+                calculateAnswer: (params) => Math.pow(params.voltage, 2) / params.resistance,
+                formatAnswer: (answer) => Math.round(answer),
+                answerUnit: {
+                    ru: "Вт",
+                    en: "W",
+                    uk: "Вт",
+                    de: "W",
+                    tr: "W",
+                    kk: "Вт"
+                }
+            },
+            {
+                id: 6,
+                difficulty: 9,
+                topics: ["kinematics", "acceleration"],
+                problem: {
+                    ru: "Автомобиль разгоняется с места до скорости {velocity} м/с за {time} с. Найдите ускорение автомобиля. Ответ округлите до десятых.",
+                    en: "A car accelerates from rest to a speed of {velocity} m/s in {time} s. Find the acceleration of the car. Round your answer to the nearest tenth.",
+                    uk: "Автомобіль розганяється з місця до швидкості {velocity} м/с за {time} с. Знайдіть прискорення автомобіля. Відповідь округліть до десятих.",
+                    de: "Ein Auto beschleunigt aus dem Stand auf eine Geschwindigkeit von {velocity} m/s in {time} s. Finden Sie die Beschleunigung des Autos. Runden Sie Ihre Antwort auf das nächste Zehntel.",
+                    tr: "Bir araba durduğu yerden {velocity} m/s hıza {time} s'de ulaşıyor. Arabanın ivmesini bulun. Cevabınızı en yakın ondalığa yuvarlayın.",
+                    kk: "Көлік тыныштықтан {velocity} м/с жылдамдыққа {time} с ішінде жетеді. Көліктің үдеуін табыңыз. Жауапты ондық бөлшекке дейін дөңгелектеңіз."
+                },
+                generateParams: () => {
+                    const velocity = Math.floor(Math.random() * 30) + 10;
+                    const time = Math.floor(Math.random() * 10) + 5;
+                    return { velocity, time };
+                },
+                calculateAnswer: (params) => params.velocity / params.time,
+                formatAnswer: (answer) => Math.round(answer * 10) / 10,
+                answerUnit: {
+                    ru: "м/с²",
+                    en: "m/s²",
+                    uk: "м/с²",
+                    de: "m/s²",
+                    tr: "m/s²",
+                    kk: "м/с²"
+                }
+            },
+
+            // 10 КЛАСС (термодинамика, оптика)
+            {
+                id: 7,
+                difficulty: 10,
+                topics: ["thermodynamics", "heat"],
+                problem: {
+                    ru: "Какое количество теплоты потребуется для нагрева {mass} кг воды от {temp1}°C до {temp2}°C? Удельная теплоемкость воды 4200 Дж/(кг·°C). Ответ в кДж.",
+                    en: "How much heat is required to heat {mass} kg of water from {temp1}°C to {temp2}°C? Specific heat capacity of water is 4200 J/(kg·°C). Answer in kJ.",
+                    uk: "Яка кількість теплоти знадобиться для нагрівання {mass} кг води від {temp1}°C до {temp2}°C? Питома теплоємність води 4200 Дж/(кг·°C). Відповідь у кДж.",
+                    de: "Wie viel Wärme wird benötigt, um {mass} kg Wasser von {temp1}°C auf {temp2}°C zu erhitzen? Spezifische Wärmekapazität von Wasser ist 4200 J/(kg·°C). Antwort in kJ.",
+                    tr: "{mass} kg suyu {temp1}°C'den {temp2}°C'ye ısıtmak için ne kadar ısı gerekir? Suyun özgül ısı kapasitesi 4200 J/(kg·°C). Cevap kJ cinsinden.",
+                    kk: "{mass} кг суды {temp1}°C-ден {temp2}°C-ге дейін қыздыру үшін қанша жылу мөлшері қажет? Судың меншікті жылу сыйымдылығы 4200 Дж/(кг·°C). Жауап кДж."
+                },
+                generateParams: () => {
+                    const mass = Math.floor(Math.random() * 5) + 1;
+                    const temp1 = Math.floor(Math.random() * 20) + 10;
+                    const temp2 = Math.floor(Math.random() * 30) + 50;
+                    return { mass, temp1, temp2 };
+                },
+                calculateAnswer: (params) => params.mass * 4200 * (params.temp2 - params.temp1) / 1000,
+                formatAnswer: (answer) => Math.round(answer),
+                answerUnit: {
+                    ru: "кДж",
+                    en: "kJ",
+                    uk: "кДж",
+                    de: "kJ",
+                    tr: "kJ",
+                    kk: "кДж"
+                }
+            },
+            {
+                id: 8,
+                difficulty: 10,
+                topics: ["optics", "lens"],
+                problem: {
+                    ru: "Предмет высотой {height} см расположен на расстоянии {distance} см от собирающей линзы с фокусным расстоянием {focal} см. Найдите высоту изображения. Ответ в см.",
+                    en: "An object {height} cm high is located at a distance of {distance} cm from a converging lens with a focal length of {focal} cm. Find the height of the image. Answer in cm.",
+                    uk: "Предмет висотою {height} см розташований на відстані {distance} см від збиральної лінзи з фокусною відстанню {focal} см. Знайдіть висоту зображення. Відповідь у см.",
+                    de: "Ein Gegenstand von {height} cm Höhe befindet sich in einem Abstand von {distance} cm von einer Sammellinse mit einer Brennweite von {focal} cm. Finden Sie die Höhe des Bildes. Antwort in cm.",
+                    tr: "{height} cm yüksekliğindeki bir nesne, {focal} cm odak uzaklığına sahip bir yakınsak mercekten {distance} cm uzaklıkta bulunuyor. Görüntünün yüksekliğini bulun. Cevap cm cinsinden.",
+                    kk: "{height} см биіктіктегі зат {focal} см фокустық аралығы бар жинағыш линзадан {distance} см қашықтықта орналасқан. Кескіннің биіктігін табыңыз. Жауап см."
+                },
+                generateParams: () => {
+                    const height = Math.floor(Math.random() * 10) + 5;
+                    const distance = Math.floor(Math.random() * 40) + 30;
+                    const focal = Math.floor(Math.random() * 20) + 15;
+                    return { height, distance, focal };
+                },
+                calculateAnswer: (params) => {
+                    const f = params.focal;
+                    const d = params.distance;
+                    const h = params.height;
+                    // Формула линзы: 1/f = 1/d + 1/f
+                    // Высота изображения: H = h * (f / (d - f))
+                    const imageDistance = (f * d) / (d - f);
+                    return Math.abs(h * imageDistance / d);
+                },
+                formatAnswer: (answer) => Math.round(answer * 10) / 10,
+                answerUnit: {
+                    ru: "см",
+                    en: "cm",
+                    uk: "см",
+                    de: "cm",
+                    tr: "cm",
+                    kk: "см"
+                }
+            },
+
+            // 11 КЛАСС (квантовая физика, ядерная физика)
+            {
+                id: 9,
+                difficulty: 11,
+                topics: ["quantum", "photoelectric"],
+                problem: {
+                    ru: "Найдите максимальную кинетическую энергию фотоэлектронов при освещении металла светом с длиной волны {wavelength} нм. Работа выхода электрона {workfunction} эВ. Ответ в эВ.",
+                    en: "Find the maximum kinetic energy of photoelectrons when a metal is illuminated with light of wavelength {wavelength} nm. The work function of the electron is {workfunction} eV. Answer in eV.",
+                    uk: "Знайдіть максимальну кінетичну енергію фотоелектронів при освітленні металу світлом з довжиною хвилі {wavelength} нм. Робота виходу електрона {workfunction} еВ. Відповідь у еВ.",
+                    de: "Finden Sie die maximale kinetische Energie von Fotoelektronen, wenn ein Metall mit Licht der Wellenlänge {wavelength} nm beleuchtet wird. Die Austrittsarbeit des Elektrons beträgt {workfunction} eV. Antwort in eV.",
+                    tr: "Bir metal {wavelength} nm dalga boyundaki ışıkla aydınlatıldığında fotoelektronların maksimum kinetik enerjisini bulun. Elektronun iş fonksiyonu {workfunction} eV'dir. Cevap eV cinsinden.",
+                    kk: "Метал {wavelength} нм толқын ұзындығымен жарықпен жарықтандырылғанда фотоэлектрондардың максималды кинетикалық энергиясын табыңыз. Электронның шығу жұмысы {workfunction} эВ. Жауап эВ."
+                },
+                generateParams: () => {
+                    const wavelength = Math.floor(Math.random() * 200) + 300;
+                    const workfunction = (Math.floor(Math.random() * 30) + 20) / 10;
+                    return { wavelength, workfunction };
+                },
+                calculateAnswer: (params) => {
+                    // Формула Эйнштейна: E = hc/λ - A
+                    // hc = 1240 эВ·нм (приблизительно)
+                    const photonEnergy = 1240 / params.wavelength;
+                    return Math.round((photonEnergy - params.workfunction) * 10) / 10;
+                },
+                formatAnswer: (answer) => Math.max(0, answer), // Энергия не может быть отрицательной
+                answerUnit: {
+                    ru: "эВ",
+                    en: "eV",
+                    uk: "еВ",
+                    de: "eV",
+                    tr: "eV",
+                    kk: "эВ"
+                }
+            },
+            {
+                id: 10,
+                difficulty: 11,
+                topics: ["nuclear", "decay"],
+                problem: {
+                    ru: "Период полураспада радиоактивного элемента составляет {halfLife} лет. Какая доля ядер останется нераспавшейся через {time} лет? Ответ округлите до сотых.",
+                    en: "The half-life of a radioactive element is {halfLife} years. What fraction of nuclei will remain undecayed after {time} years? Round your answer to hundredths.",
+                    uk: "Період напіврозпаду радіоактивного елемента становить {halfLife} років. Яка частка ядер залишиться нерозпадною через {time} років? Відповідь округліть до сотих.",
+                    de: "Die Halbwertszeit eines radioaktiven Elements beträgt {halfLife} Jahre. Welcher Bruchteil der Kerne wird nach {time} Jahren unzerfallen bleiben? Runden Sie Ihre Antwort auf Hundertstel.",
+                    tr: "Radyoaktif bir elementin yarı ömrü {halfLife} yıldır. {time} yıl sonra bozunmamış çekirdeklerin fraksiyonu nedir? Cevabınızı yüzde birler basamağına yuvarlayın.",
+                    kk: "Радиоактивті элементтің жартылай ыдырау периоды {halfLife} жыл. {time} жылдан кейін ыдырамаған ядролардың үлесі қанша болады? Жауапты жүздікке дейін дөңгелектеңіз."
+                },
+                generateParams: () => {
+                    const halfLife = Math.floor(Math.random() * 10) + 5;
+                    const time = Math.floor(Math.random() * 15) + 5;
+                    return { halfLife, time };
+                },
+                calculateAnswer: (params) => Math.pow(0.5, params.time / params.halfLife),
+                formatAnswer: (answer) => Math.round(answer * 100) / 100,
+                answerUnit: {
+                    ru: "",
+                    en: "",
+                    uk: "",
+                    de: "",
+                    tr: "",
+                    kk: ""
+                }
             }
         ];
 
