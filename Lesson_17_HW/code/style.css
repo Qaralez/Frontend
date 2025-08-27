@@ -1,0 +1,27 @@
+.container{
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background-color: antiquewhite;
+    border: 1px solid gray;
+}
+
+.moving{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: rgb(22, 211, 224);
+    border: 1px solid gray;
+    top: 0;
+    left:0; 
+}
+
+.buttons{
+    margin-top: 10px;
+}
+button{
+    margin: 3px;
+    padding: 5px 10px;
+}
+
+
