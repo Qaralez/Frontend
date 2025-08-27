@@ -1,0 +1,18 @@
+body{
+    background-color: bisque;
+}
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+}
+
+.clock{
+    width: 500px;
+    height: 1em;
+    color: red;
+    font-family: 'Courier New', Courier, monospace;
+    
+}
