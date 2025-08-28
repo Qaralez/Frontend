@@ -1,0 +1,20 @@
+.container {
+    column-count: 3;
+    column-gap: 20px;
+}
+
+
+.container h2 {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.container p {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+h2{
+    color: rgb(68, 170, 18);
+    
+}
