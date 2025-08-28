@@ -29,7 +29,7 @@ function Product(name, description, price) {
     };
 }
 
-const product3 = new Product("tablet: csv?s", "Планшет для мобильной работы", 650);
+const product3 = new Product("tablet: csvs", "Планшет для мобильной работы", 650);
 const product4 = new Product("monitor: rem", "Монитор с высоким разрешением", 450);
 const product5 = new Product("keyboard: Info", "Механическая клавиатура", 120);
 
