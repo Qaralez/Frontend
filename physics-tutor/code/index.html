@@ -145,6 +145,27 @@
             margin-top: 1.5rem;
         }
 
+        #hint-container {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #fff3cd;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        #hint-title {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        #user-score {
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 1rem;
@@ -213,22 +234,243 @@
 
         <div class="button-group">
             <button id="check-answer-btn">Проверить ответ</button>
+            <button id="hint-btn">Подсказка</button>
             <button id="new-task-btn">Новая задача</button>
         </div>
 
+        <div id="hint-container">
+            <h3 id="hint-title">Подсказка:</h3>
+            <p id="hint-content"></p>
+        </div>
+
         <div id="result"></div>
+        <div id="user-score"></div>
     </div>
 
     <script>
-        
         let currentLanguage = 'ru';
         let currentDifficulty = 7;
         let currentTask = null;
         let currentParams = null;
         let correctAnswer = null;
         let interfaceTranslations = {};
+        let userScore = 0;
 
-       
+        // Полные переводы для всех языков
+        const translations = {
+            'ru': {
+                'title': 'Решатель задач по физике',
+                'selectDifficulty': 'Выберите класс:',
+                'selectLanguage': 'Выберите язык:',
+                'generateTask': 'Сгенерировать задачу',
+                'checkAnswer': 'Проверить ответ',
+                'yourAnswer': 'Ваш ответ:',
+                'correct': 'Верно!',
+                'incorrect': 'Неверно. Правильный ответ: ',
+                'newTask': 'Новая задача',
+                'taskTopic': 'Тема: ',
+                'difficultyLevel': 'Класс: ',
+                'enterNumber': 'Введите число',
+                'pleaseEnterNumber': 'Пожалуйста, введите число!',
+                'noTasksAvailable': 'Нет задач для этого уровня сложности',
+                'score': 'Рейтинг',
+                'hint': 'Подсказка',
+                'hintTitle': 'Подсказка:',
+                'taskHeader': 'Задача:',
+                'generateTaskHint': 'Нажмите "Сгенерировать задачу" чтобы начать'
+            },
+            'en': {
+                'title': 'Physics Problem Solver',
+                'selectDifficulty': 'Select grade:',
+                'selectLanguage': 'Select language:',
+                'generateTask': 'Generate Task',
+                'checkAnswer': 'Check Answer',
+                'yourAnswer': 'Your answer:',
+                'correct': 'Correct!',
+                'incorrect': 'Incorrect. The correct answer is: ',
+                'newTask': 'New Task',
+                'taskTopic': 'Topic: ',
+                'difficultyLevel': 'Grade: ',
+                'enterNumber': 'Enter a number',
+                'pleaseEnterNumber': 'Please enter a number!',
+                'noTasksAvailable': 'No tasks available for this difficulty level',
+                'score': 'Score',
+                'hint': 'Hint',
+                'hintTitle': 'Hint:',
+                'taskHeader': 'Task:',
+                'generateTaskHint': 'Click "Generate Task" to start'
+            },
+            'uk': {
+                'title': 'Вирішувач задач з фізики',
+                'selectDifficulty': 'Оберіть клас:',
+                'selectLanguage': 'Оберіть мову:',
+                'generateTask': 'Згенерувати задачу',
+                'checkAnswer': 'Перевірити відповідь',
+                'yourAnswer': 'Ваша відповідь:',
+                'correct': 'Вірно!',
+                'incorrect': 'Невірно. Правильна відповідь: ',
+                'newTask': 'Нова задача',
+                'taskTopic': 'Тема: ',
+                'difficultyLevel': 'Клас: ',
+                'enterNumber': 'Введіть число',
+                'pleaseEnterNumber': 'Будь ласка, введіть число!',
+                'noTasksAvailable': 'Немає завдань для цього рівня складності',
+                'score': 'Рейтинг',
+                'hint': 'Підказка',
+                'hintTitle': 'Підказка:',
+                'taskHeader': 'Задача:',
+                'generateTaskHint': 'Натисніть "Згенерувати задачу" щоб почати'
+            },
+            'de': {
+                'title': 'Physik-Problemlöser',
+                'selectDifficulty': 'Klasse auswählen:',
+                'selectLanguage': 'Sprache auswählen:',
+                'generateTask': 'Aufgabe generieren',
+                'checkAnswer': 'Antwort prüfen',
+                'yourAnswer': 'Ihre Antwort:',
+                'correct': 'Richtig!',
+                'incorrect': 'Falsch. Richtige Antwort: ',
+                'newTask': 'Neue Aufgabe',
+                'taskTopic': 'Thema: ',
+                'difficultyLevel': 'Klasse: ',
+                'enterNumber': 'Geben Sie eine Zahl ein',
+                'pleaseEnterNumber': 'Bitte geben Sie eine Zahl ein!',
+                'noTasksAvailable': 'Keine Aufgaben für dieses Schwierigkeitslevel verfügbar',
+                'score': 'Punktestand',
+                'hint': 'Hinweis',
+                'hintTitle': 'Hinweis:',
+                'taskHeader': 'Aufgabe:',
+                'generateTaskHint': 'Klicken Sie "Aufgabe generieren" um zu beginnen'
+            },
+            'tr': {
+                'title': 'Fizik Problem Çözücü',
+                'selectDifficulty': 'Sınıf seçin:',
+                'selectLanguage': 'Dil seçin:',
+                'generateTask': 'Görev Oluştur',
+                'checkAnswer': 'Cevabı Kontrol Et',
+                'yourAnswer': 'Cevabınız:',
+                'correct': 'Doğru!',
+                'incorrect': 'Yanlış. Doğru cevap: ',
+                'newTask': 'Yeni Görev',
+                'taskTopic': 'Konu: ',
+                'difficultyLevel': 'Sınıf: ',
+                'enterNumber': 'Bir sayı girin',
+                'pleaseEnterNumber': 'Lütfen bir sayı girin!',
+                'noTasksAvailable': 'Bu zorluk seviyesi için görev yok',
+                'score': 'Puan',
+                'hint': 'İpucu',
+                'hintTitle': 'İpucu:',
+                'taskHeader': 'Görev:',
+                'generateTaskHint': 'Başlamak için "Görev Oluştur"a tıklayın'
+            },
+            'kk': {
+                'title': 'Физика Есептер Шешуші',
+                'selectDifficulty': 'Сыныпты таңдаңыз:',
+                'selectLanguage': 'Тілді таңдаңыз:',
+                'generateTask': 'Тапсырма жасау',
+                'checkAnswer': 'Жауапты тексеру',
+                'yourAnswer': 'Сіздің жауабыңыз:',
+                'correct': 'Дұрыс!',
+                'incorrect': 'Қате. Дұрыс жауап: ',
+                'newTask': 'Жаңа тапсырма',
+                'taskTopic': 'Тақырып: ',
+                'difficultyLevel': 'Сынып: ',
+                'enterNumber': 'Сан енгізіңіз',
+                'pleaseEnterNumber': 'Саныңызды енгізіңіз!',
+                'noTasksAvailable': 'Осы қиындық деңгейіне арналған тапсырмалар жоқ',
+                'score': 'Рейтинг',
+                'hint': 'Көмек',
+                'hintTitle': 'Көмек:',
+                'taskHeader': 'Тапсырма:',
+                'generateTaskHint': 'Бастау үшін "Тапсырма жасау" түймесін басыңыз'
+            }
+        };
+
+        // Подсказки для задач
+        const hints = {
+            1: {
+                ru: "Средняя скорость = Расстояние / Время",
+                en: "Average speed = Distance / Time",
+                uk: "Середня швидкість = Відстань / Час",
+                de: "Durchschnittsgeschwindigkeit = Strecke / Zeit",
+                tr: "Ortalama hız = Mesafe / Zaman",
+                kk: "Орташа жылдамдық = Қашықтық / Уақыт"
+            },
+            2: {
+                ru: "Плотность = Масса / Объем",
+                en: "Density = Mass / Volume",
+                uk: "Густина = Маса / Об'єм",
+                de: "Dichte = Masse / Volumen",
+                tr: "Yoğunluk = Kütle / Hacim",
+                kk: "Тығыздық = Масса / Көлем"
+            },
+            3: {
+                ru: "Давление = Сила / Площадь",
+                en: "Pressure = Force / Area",
+                uk: "Тиск = Сила / Площа",
+                de: "Druck = Kraft / Fläche",
+                tr: "Basınç = Kuvvet / Alan",
+                kk: "Қысым = Күш / Аудан"
+            },
+            4: {
+                ru: "Работа = Масса × Ускорение свободного падения × Высота",
+                en: "Work = Mass × Gravity acceleration × Height",
+                uk: "Робота = Маса × Прискорення вільного падіння × Висота",
+                de: "Arbeit = Masse × Erdbeschleunigung × Höhe",
+                tr: "İş = Kütle × Yerçekimi ivmesi × Yükseklik",
+                kk: "Жұмыс = Масса × Еркін түсу үдеуі × Биіктік"
+            },
+            5: {
+                ru: "Мощность = Напряжение² / Сопротивление",
+                en: "Power = Voltage² / Resistance",
+                uk: "Потужність = Напруга² / Опір",
+                de: "Leistung = Spannung² / Widerstand",
+                tr: "Güç = Voltaj² / Direnç",
+                kk: "Қуат = Кернеу² / Кедергі"
+            },
+            6: {
+                ru: "Ускорение = Изменение скорости / Время",
+                en: "Acceleration = Change in velocity / Time",
+                uk: "Прискорення = Зміна швидкості / Час",
+                de: "Beschleunigung = Geschwindigkeitsänderung / Zeit",
+                tr: "İvme = Hız değişimi / Zaman",
+                kk: "Үдеу = Жылдамдықтың өзгеруі / Уақыт"
+            },
+            7: {
+                ru: "Количество теплоты = Масса × Удельная теплоемкость × Разность температур",
+                en: "Heat = Mass × Specific heat capacity × Temperature difference",
+                uk: "Кількість теплоти = Маса × Питома теплоємність × Різниця температур",
+                de: "Wärme = Masse × Spezifische Wärmekapazität × Temperaturdifferenz",
+                tr: "Isı = Kütle × Özgül ısı kapasitesi × Sıcaklık farkı",
+                kk: "Жылу мөлшері = Масса × Меншікті жылу сыйымдылығы × Температура айырмасы"
+            },
+            8: {
+                ru: "Формула линзы: 1/F = 1/d + 1/f, где F - фокусное расстояние, d - расстояние до предмета, f - расстояние до изображения",
+                en: "Lens formula: 1/F = 1/d + 1/f, where F is focal length, d is object distance, f is image distance",
+                uk: "Формула лінзи: 1/F = 1/d + 1/f, де F - фокусна відстань, d - відстань до предмета, f - відстань до зображення",
+                de: "Linsenformel: 1/F = 1/d + 1/f, wobei F die Brennweite, d die Gegenstandsweite und f die Bildweite ist",
+                tr: "Lens formülü: 1/F = 1/d + 1/f, burada F odak uzaklığı, d nesne mesafesi, f görüntü mesafesidir",
+                kk: "Линза формуласы: 1/F = 1/d + 1/f, мұндағы F - фокустық аралық, d - затқа дейінгі қашықтық, f - кескінге дейінгі қашықтық"
+            },
+            9: {
+                ru: "Формула Эйнштейна: E = hc/λ - A, где E - кинетическая энергия, hc ≈ 1240 эВ·нм, λ - длина волны, A - работа выхода",
+                en: "Einstein's formula: E = hc/λ - A, where E is kinetic energy, hc ≈ 1240 eV·nm, λ is wavelength, A is work function",
+                uk: "Формула Ейнштейна: E = hc/λ - A, де E - кінетична енергія, hc ≈ 1240 еВ·нм, λ - довжина хвилі, A - робота виходу",
+                de: "Einsteins Formel: E = hc/λ - A, wobei E die kinetische Energie, hc ≈ 1240 eV·nm, λ die Wellenlänge und A die Austrittsarbeit ist",
+                tr: "Einstein formülü: E = hc/λ - A, burada E kinetik enerji, hc ≈ 1240 eV·nm, λ dalga boyu, A iş fonksiyonudur",
+                kk: "Эйнштейн формуласы: E = hc/λ - A, мұндағы E - кинетикалық энергия, hc ≈ 1240 эВ·нм, λ - толқын ұзындығы, A - шығу жұмысы"
+            },
+            10: {
+                ru: "Закон радиоактивного распада: N = N₀ × (1/2)^(t/T), где N - оставшееся количество, N₀ - начальное количество, t - время, T - период полураспада",
+                en: "Radioactive decay law: N = N₀ × (1/2)^(t/T), where N is remaining amount, N₀ is initial amount, t is time, T is half-life",
+                uk: "Закон радіоактивного розпаду: N = N₀ × (1/2)^(t/T), де N - залишкова кількість, N₀ - початкова кількість, t - час, T - період напіврозпаду",
+                de: "Radioaktives Zerfallsgesetz: N = N₀ × (1/2)^(t/T), wobei N die verbleibende Menge, N₀ die Anfangsmenge, t die Zeit und T die Halbwertszeit ist",
+                tr: "Radyoaktif bozunma yasası: N = N₀ × (1/2)^(t/T), burada N kalan miktar, N₀ başlangıç miktarı, t zaman, T yarı ömürdür",
+                kk: "Радиоактивті ыдырау заңы: N = N₀ × (1/2)^(t/T), мұндағы N - қалған мөлшер, N₀ - бастапқы мөлшер, t - уақыт, T - жартылай ыдырау периоды"
+            }
+        };
+
+        // Все задачи по физике
         const physicsTasks = [
             {
                 id: 1,
@@ -342,8 +584,6 @@
                     kk: "Дж"
                 }
             },
-
-            // 9 КЛАСС (электричество, кинематика)
             {
                 id: 5,
                 difficulty: 9,
@@ -400,8 +640,6 @@
                     kk: "м/с²"
                 }
             },
-
-            // 10 КЛАСС (термодинамика, оптика)
             {
                 id: 7,
                 difficulty: 10,
@@ -453,8 +691,6 @@
                     const f = params.focal;
                     const d = params.distance;
                     const h = params.height;
-                    // Формула линзы: 1/f = 1/d + 1/f
-                    // Высота изображения: H = h * (f / (d - f))
                     const imageDistance = (f * d) / (d - f);
                     return Math.abs(h * imageDistance / d);
                 },
@@ -468,8 +704,6 @@
                     kk: "см"
                 }
             },
-
-            // 11 КЛАСС (квантовая физика, ядерная физика)
             {
                 id: 9,
                 difficulty: 11,
@@ -488,12 +722,10 @@
                     return { wavelength, workfunction };
                 },
                 calculateAnswer: (params) => {
-                    // Формула Эйнштейна: E = hc/λ - A
-                    // hc = 1240 эВ·нм (приблизительно)
                     const photonEnergy = 1240 / params.wavelength;
                     return Math.round((photonEnergy - params.workfunction) * 10) / 10;
                 },
-                formatAnswer: (answer) => Math.max(0, answer), // Энергия не может быть отрицательной
+                formatAnswer: (answer) => Math.max(0, answer),
                 answerUnit: {
                     ru: "эВ",
                     en: "eV",
@@ -533,113 +765,11 @@
             }
         ];
 
-        
-        const translations = {
-            'ru': {
-                'title': 'Решатель задач по физике',
-                'selectDifficulty': 'Выберите класс:',
-                'selectLanguage': 'Выберите язык:',
-                'generateTask': 'Сгенерировать задачу',
-                'checkAnswer': 'Проверить ответ',
-                'yourAnswer': 'Ваш ответ:',
-                'correct': 'Верно!',
-                'incorrect': 'Неверно. Правильный ответ: ',
-                'newTask': 'Новая задача',
-                'taskTopic': 'Тема: ',
-                'difficultyLevel': 'Класс: ',
-                'enterNumber': 'Введите число',
-                'pleaseEnterNumber': 'Пожалуйста, введите число!',
-                'noTasksAvailable': 'Нет задач для этого уровня сложности'
-            },
-            'en': {
-                'title': 'Physics Problem Solver',
-                'selectDifficulty': 'Select grade:',
-                'selectLanguage': 'Select language:',
-                'generateTask': 'Generate Task',
-                'checkAnswer': 'Check Answer',
-                'yourAnswer': 'Your answer:',
-                'correct': 'Correct!',
-                'incorrect': 'Incorrect. The correct answer is: ',
-                'newTask': 'New Task',
-                'taskTopic': 'Topic: ',
-                'difficultyLevel': 'Grade: ',
-                'enterNumber': 'Enter a number',
-                'pleaseEnterNumber': 'Please enter a number!',
-                'noTasksAvailable': 'No tasks available for this difficulty level'
-            },
-            'uk': {
-                'title': 'Вирішувач задач з фізики',
-                'selectDifficulty': 'Оберіть клас:',
-                'selectLanguage': 'Оберіть мову:',
-                'generateTask': 'Згенерувати задачу',
-                'checkAnswer': 'Перевірити відповідь',
-                'yourAnswer': 'Ваша відповідь:',
-                'correct': 'Вірно!',
-                'incorrect': 'Невірно. Правильна відповідь: ',
-                'newTask': 'Нова задача',
-                'taskTopic': 'Тема: ',
-                'difficultyLevel': 'Клас: ',
-                'enterNumber': 'Введіть число',
-                'pleaseEnterNumber': 'Будь ласка, введіть число!',
-                'noTasksAvailable': 'Немає завдань для цього рівня складності'
-            },
-            'de': {
-                'title': 'Physik-Problemlöser',
-                'selectDifficulty': 'Klasse auswählen:',
-                'selectLanguage': 'Sprache auswählen:',
-                'generateTask': 'Aufgabe generieren',
-                'checkAnswer': 'Antwort prüfen',
-                'yourAnswer': 'Ihre Antwort:',
-                'correct': 'Richtig!',
-                'incorrect': 'Falsch. Richtige Antwort: ',
-                'newTask': 'Neue Aufgabe',
-                'taskTopic': 'Thema: ',
-                'difficultyLevel': 'Klasse: ',
-                'enterNumber': 'Geben Sie eine Zahl ein',
-                'pleaseEnterNumber': 'Bitte geben Sie eine Zahl ein!',
-                'noTasksAvailable': 'Keine Aufgaben für dieses Schwierigkeitslevel verfügbar'
-            },
-            'tr': {
-                'title': 'Fizik Problem Çözücü',
-                'selectDifficulty': 'Sınıf seçin:',
-                'selectLanguage': 'Dil seçin:',
-                'generateTask': 'Görev Oluştur',
-                'checkAnswer': 'Cevabı Kontrol Et',
-                'yourAnswer': 'Cevabınız:',
-                'correct': 'Doğru!',
-                'incorrect': 'Yanlış. Doğru cevap: ',
-                'newTask': 'Yeni Görev',
-                'taskTopic': 'Konu: ',
-                'difficultyLevel': 'Sınıf: ',
-                'enterNumber': 'Bir sayı girin',
-                'pleaseEnterNumber': 'Lütfen bir sayı girin!',
-                'noTasksAvailable': 'Bu zorluk seviyesi için görev yok'
-            },
-            'kk': {
-                'title': 'Физика Есептер Шешуші',
-                'selectDifficulty': 'Сыныпты таңдаңыз:',
-                'selectLanguage': 'Тілді таңдаңыз:',
-                'generateTask': 'Тапсырма жасау',
-                'checkAnswer': 'Жауапты тексеру',
-                'yourAnswer': 'Сіздің жауабыңыз:',
-                'correct': 'Дұрыс!',
-                'incorrect': 'Қате. Дұрыс жауап: ',
-                'newTask': 'Жаңа тапсырма',
-                'taskTopic': 'Тақырып: ',
-                'difficultyLevel': 'Сынып: ',
-                'enterNumber': 'Сан енгізіңіз',
-                'pleaseEnterNumber': 'Саныңызды енгізіңіз!',
-                'noTasksAvailable': 'Осы қиындық деңгейіне арналған тапсырмалар жоқ'
-            }
-        };
-
-        
         function loadTranslations(lang) {
             interfaceTranslations = translations[lang] || translations['en'];
             updateUI();
         }
 
-        
         function updateUI() {
             document.getElementById('title').textContent = interfaceTranslations.title;
             document.getElementById('difficulty-label').textContent = interfaceTranslations.selectDifficulty;
@@ -648,25 +778,91 @@
             document.getElementById('check-answer-btn').textContent = interfaceTranslations.checkAnswer;
             document.getElementById('answer-label').textContent = interfaceTranslations.yourAnswer;
             document.getElementById('new-task-btn').textContent = interfaceTranslations.newTask;
-            document.getElementById('task-header').textContent = interfaceTranslations.generateTask;
+            document.getElementById('hint-btn').textContent = interfaceTranslations.hint;
+            document.getElementById('hint-title').textContent = interfaceTranslations.hintTitle;
+            document.getElementById('task-header').textContent = interfaceTranslations.taskHeader;
             document.getElementById('user-answer').placeholder = interfaceTranslations.enterNumber;
+            
+            if (!currentTask) {
+                document.getElementById('task-text').textContent = interfaceTranslations.generateTaskHint;
+            }
+            
+            updateScoreDisplay();
+            updateGradeOptions();
         }
 
-        
+        function updateGradeOptions() {
+            const gradeSelect = document.getElementById('difficulty-select');
+            const grades = {
+                'ru': ['7 класс', '8 класс', '9 класс', '10 класс', '11 класс'],
+                'en': ['Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11'],
+                'uk': ['7 клас', '8 клас', '9 клас', '10 клас', '11 клас'],
+                'de': ['Klasse 7', 'Klasse 8', 'Klasse 9', 'Klasse 10', 'Klasse 11'],
+                'tr': ['7. Sınıf', '8. Sınıf', '9. Sınıf', '10. Sınıf', '11. Sınıf'],
+                'kk': ['7 сынып', '8 сынып', '9 сынып', '10 сынып', '11 сынып']
+            };
+            
+            const currentGrades = grades[currentLanguage] || grades['en'];
+            
+            for (let i = 0; i < gradeSelect.options.length; i++) {
+                gradeSelect.options[i].text = currentGrades[i];
+            }
+        }
+
+        function initializeScoreSystem() {
+            const currentDate = new Date().toDateString();
+            const storedDate = localStorage.getItem('lastResetDate');
+            const storedScore = localStorage.getItem('userScore');
+            
+            if (storedDate !== currentDate) {
+                userScore = 0;
+                localStorage.setItem('lastResetDate', currentDate);
+                localStorage.setItem('userScore', 0);
+            } else {
+                userScore = parseInt(storedScore) || 0;
+            }
+            
+            updateScoreDisplay();
+        }
+
+        function updateUserScore(points) {
+            userScore += points;
+            userScore = Math.max(0, userScore);
+            localStorage.setItem('userScore', userScore);
+            updateScoreDisplay();
+        }
+
+        function updateScoreDisplay() {
+            const scoreElement = document.getElementById('user-score');
+            if (scoreElement && interfaceTranslations.score) {
+                scoreElement.textContent = `${interfaceTranslations.score}: ${userScore}`;
+            }
+        }
+
+        function checkTasksAvailability() {
+            const filteredTasks = physicsTasks.filter(task => task.difficulty == currentDifficulty);
+            return filteredTasks.length > 0;
+        }
+
         function generateNewTask() {
             const resultElement = document.getElementById('result');
+            const hintContainer = document.getElementById('hint-container');
+            
             resultElement.textContent = '';
             resultElement.className = '';
+            hintContainer.style.display = 'none';
             document.getElementById('user-answer').value = '';
 
-            const filteredTasks = physicsTasks.filter(task => task.difficulty == currentDifficulty);
-
-            if (filteredTasks.length === 0) {
+            if (!checkTasksAvailability()) {
                 resultElement.textContent = interfaceTranslations.noTasksAvailable;
                 resultElement.className = 'incorrect';
+                document.getElementById('task-text').textContent = interfaceTranslations.generateTaskHint;
+                document.getElementById('topic-display').textContent = '';
+                document.getElementById('difficulty-display').textContent = '';
                 return;
             }
 
+            const filteredTasks = physicsTasks.filter(task => task.difficulty == currentDifficulty);
             const randomIndex = Math.floor(Math.random() * filteredTasks.length);
             currentTask = filteredTasks[randomIndex];
             currentParams = currentTask.generateParams();
@@ -686,7 +882,6 @@
             document.getElementById('difficulty-display').textContent = `${interfaceTranslations.difficultyLevel}${currentTask.difficulty}`;
         }
 
-        
         function checkAnswer() {
             const userInput = parseFloat(document.getElementById('user-answer').value);
             const resultElement = document.getElementById('result');
@@ -697,18 +892,22 @@
                 return;
             }
 
-            if (userInput === correctAnswer) {
+            const tolerance = 0.1;
+            const isCorrect = Math.abs(userInput - correctAnswer) <= tolerance;
+
+            if (isCorrect) {
                 resultElement.textContent = `${interfaceTranslations.correct} ${correctAnswer} ${currentTask.answerUnit[currentLanguage]}`;
                 resultElement.className = 'correct';
+                updateUserScore(10);
             } else {
                 resultElement.textContent = `${interfaceTranslations.incorrect} ${correctAnswer} ${currentTask.answerUnit[currentLanguage]}`;
                 resultElement.className = 'incorrect';
             }
         }
 
-        
         window.onload = function() {
             loadTranslations(currentLanguage);
+            initializeScoreSystem();
 
             document.getElementById('difficulty-select').addEventListener('change', function() {
                 currentDifficulty = parseInt(this.value);
@@ -725,6 +924,17 @@
             document.getElementById('generate-task-btn').addEventListener('click', generateNewTask);
             document.getElementById('check-answer-btn').addEventListener('click', checkAnswer);
             document.getElementById('new-task-btn').addEventListener('click', generateNewTask);
+            
+            document.getElementById('hint-btn').addEventListener('click', function() {
+                const hintContainer = document.getElementById('hint-container');
+                const hintContent = document.getElementById('hint-content');
+                
+                if (currentTask && hints[currentTask.id]) {
+                    hintContent.textContent = hints[currentTask.id][currentLanguage] || hints[currentTask.id]['en'];
+                    hintContainer.style.display = 'block';
+                    updateUserScore(-5);
+                }
+            });
 
             generateNewTask();
         };

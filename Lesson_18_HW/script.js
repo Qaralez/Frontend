@@ -37,9 +37,9 @@ const products = [product1, product2, product3, product4, product5];
 
 
 function displayAllProducts(productsArray) {
-    console.log("=".repeat(50));
+
     console.log("ИНФОРМАЦИЯ О ВСЕХ ТОВАРАХ");
-    console.log("=".repeat(50));
+    
     
     productsArray.forEach((product, index) => {
         console.log(`| Товар | ${index + 1}    |`);
@@ -48,7 +48,7 @@ function displayAllProducts(productsArray) {
         console.log(`| price: ${product.price}    |`);
         console.log(`| description: ${product.description}    |`);
         console.log(`| Info: ${product.info()}    |`);
-        console.log("=".repeat(50));
+       
     });
 }
 

@@ -118,3 +118,83 @@ window.onload = function() {
     // Генерируем первую задачу
     generateNewTask();
 };
+
+const hints = {
+    1: {
+        ru: "Средняя скорость = Расстояние / Время",
+        en: "Average speed = Distance / Time",
+        uk: "Середня швидкість = Відстань / Час",
+        de: "Durchschnittsgeschwindigkeit = Strecke / Zeit",
+        tr: "Ortalama hız = Mesafe / Zaman",
+        kk: "Орташа жылдамдық = Қашықтық / Уақыт"
+    },
+    2: {
+        ru: "Плотность = Масса / Объем",
+        en: "Density = Mass / Volume",
+        uk: "Густина = Маса / Об'єм",
+        de: "Dichte = Masse / Volumen",
+        tr: "Yoğunluk = Kütle / Hacim",
+        kk: "Тығыздық = Масса / Көлем"
+    },
+    
+};
+
+
+document.getElementById('hint-btn').addEventListener('click', function() {
+    const hintContainer = document.getElementById('hint-container');
+    const hintContent = document.getElementById('hint-content');
+    
+    if (currentTask && hints[currentTask.id]) {
+        hintContent.textContent = hints[currentTask.id][currentLanguage];
+        hintContainer.style.display = 'block';
+        
+        
+        updateUserScore(-5);
+    }
+});
+
+let userScore = 0;
+let lastResetDate = null;
+
+function initializeScoreSystem() {
+    
+    const currentDate = new Date().toDateString();
+    const storedDate = localStorage.getItem('lastResetDate');
+    const storedScore = localStorage.getItem('userScore');
+    
+    if (storedDate !== currentDate) {
+        
+        userScore = 0;
+        localStorage.setItem('lastResetDate', currentDate);
+        localStorage.setItem('userScore', 0);
+    } else {
+        userScore = parseInt(storedScore) || 0;
+    }
+    
+    updateScoreDisplay();
+}
+
+function updateUserScore(points) {
+    userScore += points;
+    userScore = Math.max(0, userScore); 
+    
+    localStorage.setItem('userScore', userScore);
+    updateScoreDisplay();
+}
+
+function updateScoreDisplay() {
+    const scoreElement = document.getElementById('user-score');
+    if (scoreElement) {
+        scoreElement.textContent = `${interfaceTranslations.score || 'Рейтинг'}: ${userScore}`;
+    }
+}
+
+
+function addScoreToUI() {
+    const scoreDiv = document.createElement('div');
+    scoreDiv.id = 'user-score';
+    scoreDiv.style.marginTop = '1rem';
+    scoreDiv.style.fontWeight = 'bold';
+    scoreDiv.style.color = '#2c3e50';
+    document.querySelector('.container').appendChild(scoreDiv);
+}
